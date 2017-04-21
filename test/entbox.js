@@ -2,7 +2,7 @@ const EntboxContract = artifacts.require("./EntboxContract.sol");
 
 contract('EntboxContract', function(accounts) {
 
-    const account0 = accounts[0];
+    const account1 = accounts[0];
     const storedDets = 22;
     const storedEuro = 31;
     const id = "abcdef";
@@ -11,7 +11,7 @@ contract('EntboxContract', function(accounts) {
         let detsContract;
         return EntboxContract.deployed().then(function(instance) {
             detsContract = instance;
-            return detsContract.storeReceipt(id, account0, storedDets, storedEuro, {from:accounts[0]})
+            return detsContract.storeReceipt(id, account1, storedDets, storedEuro, {from:accounts[0]})
         }).then(function() {
             return detsContract.getTotalDetsAmount.call();
         }).then(function(detsAmount){
@@ -23,7 +23,7 @@ contract('EntboxContract', function(accounts) {
         let detsContract;
         return EntboxContract.deployed().then(function(instance) {
             detsContract = instance;
-            return detsContract.storeReceipt(id, account0, storedDets, storedEuro, {from:accounts[0]})
+            return detsContract.storeReceipt(id, account1, storedDets, storedEuro, {from:accounts[0]})
         }).then(function() {
             return detsContract.getDetsAmountFromReceipt.call(id);
         }).then(function(detsAmount){
@@ -35,7 +35,7 @@ contract('EntboxContract', function(accounts) {
         }).then(function() {
             return detsContract.getTokenCreatorFromReceipt.call(id);
         }).then(function(tokenCreator){
-            assert.equal(tokenCreator,account0,"tokenCreator not stored correctly!");
+            assert.equal(tokenCreator,account1,"tokenCreator not stored correctly!");
         }).then(function() {
             return detsContract.getTokenCreatedStatusFromReceipt.call(id);
         }).then(function(tokenCreatedStatus){
@@ -47,7 +47,7 @@ contract('EntboxContract', function(accounts) {
         let detsContract;
         return EntboxContract.deployed().then(function(instance) {
             detsContract = instance;
-            return detsContract.storeReceipt(id, account0, storedDets, storedEuro,{from:accounts[0]})
+            return detsContract.storeReceipt(id, account1, storedDets, storedEuro,{from:accounts[0]})
         }).then(function() {
             return detsContract.getDetsAmountFromReceipt.call("wrongId");
         }).then(function(detsAmount){
@@ -67,7 +67,7 @@ contract('EntboxContract', function(accounts) {
         let detsContract;
         return EntboxContract.deployed().then(function(instance) {
             detsContract = instance;
-            return detsContract.storeReceipt(id, account0, storedDets, storedEuro, {from:accounts[2]})
+            return detsContract.storeReceipt(id, account1, storedDets, storedEuro, {from:accounts[2]})
         }).then(function() {
             console.log("this should not log! only owner should be allowed to call storeReceipt!");
             assert.equal(true,false,"only owner should be allowed to call storeReceipt!");
@@ -153,7 +153,7 @@ contract('EntboxContract', function(accounts) {
             console.log("attempt to destroy more Dets than on account avail should lead to throw!");
             assert.equal(true,false,"attempt to destroy more Dets than on account avail should lead to throw!");
         }).catch(function() {
-            console.log("failed as expected: attempt to destroy more Dets than on account avail should lead to throw!");
+            //console.log("failed as expected: attempt to destroy more Dets than on account avail should lead to throw!");
             // failed as expected
         }).then(function(){
             return detsContract.destroyDets(destroyId+"3", 0, iban, {from:userAccount});
